@@ -1,0 +1,71 @@
+{{ define "checkout" }}
+    {{ template "header" . }}
+    <div class="row mb-5">
+        <!-- 个人信息部分 -->
+        <div class="col-lg-8 col-sm-12">
+            <form method="post" action="/checkout/waiting">
+                <div class="row">
+                    {{range .personItems}}
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{.Firstname}} {{.Lastname}}</h5>
+                                <p class="card-text">
+                                    <strong>Email:</strong> {{.Email}}<br>
+                                    <strong>Street Address:</strong> {{.StreetAddress}}<br>
+                                    <strong>City:</strong> {{.City}}<br>
+                                    <strong>State:</strong> {{.State}}<br>
+                                    <strong>ZipCode:</strong> {{.ZipCode}}<br>
+                                    <strong>Country:</strong> {{.Country}}<br>
+                                    <strong>Credit Card Number:</strong> {{.CreditCardNum}}<br>
+                                    <strong>Expiration Year:</strong> {{.CreditCardYeat}}<br>
+                                    <strong>Expiration Month:</strong> {{.CreditCardMonth}}<br>
+                                    <strong>CVV:</strong> {{.Cvv}}<br>
+                                </p>
+                                <!-- 添加单选按钮 -->
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" name="selectedPerson" id="person-{{.PersonInforId}}" value="{{.PersonInforId}}">
+                                    <label class="form-check-label" for="person-{{.PersonInforId}}">
+                                        Select
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+
+                <div class="mt-4 mb-3">
+                    <div class="float-end">
+                        <div class="m-3 text-danger fs-5 fw-bold">Total: ${{ .total }}</div>
+                        <input type="submit" class="btn btn-success btn-lg" value="Pay">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 商品信息部分 -->
+        <div class="col-lg-4 col-sm-12">
+            <ul class="list-group">
+                {{ range $.items }}
+                <li class="list-group-item mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body row">
+                            <div class="col-4">
+                                <img src="{{ .Picture }}" class="img-fluid rounded" style="max-width: 100px; max-height: 100px;" alt="Product Image">
+                            </div>
+                            <div class="col-8">
+                                <div class="mt-1 fw-bold">{{ .Name }}</div>
+                                <div class="mt-1">Single Price: ${{ .Price }}</div>
+                                <div class="mt-1">Qty: {{ .Qty }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {{ end}}
+            </ul>
+        </div>
+    </div>
+
+    {{ template "footer" . }}
+{{ end }}

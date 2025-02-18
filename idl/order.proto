@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "/order";
+
+import "checkout.proto";
+
+service orderService {
+    rpc ListOrder(ListOrderReq) returns (ListOrderResp){};
+    rpc AddOrder(AddOrderReq) returns (AddOrderResp){};
+}
+
+message ProductItems {
+    uint32 product_id = 1;
+    uint32 quantity = 2;
+    float cost = 3;
+}
+
+message AddOrderReq{
+    uint32 user_id = 1;
+    string email = 2;
+    checkout.Address Address = 3;
+    float cost = 4;
+    repeated ProductItems items = 5;
+}
+
+message AddOrderResp{
+    string order_id = 1;
+}
+
+message ListOrderReq{
+    uint32 user_id = 1;
+}
+
+message Order {
+    repeated ProductItems items = 1;
+    string order_id = 2;
+    uint32 user_id = 3;
+    checkout.Address address = 4;
+    string email = 5;
+    int32 created_at = 6;
+}
+
+message ListOrderResp {
+    repeated Order order_list= 1;
+}
+

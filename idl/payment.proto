@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package = "/payment";
+
+service PaymentService{
+    rpc Charge(PaymentServiceReq) returns (PaymentServiceResp){};
+}
+
+message CreditCardInfo {
+    string credit_card_num = 1;
+    int32 creit_card_cvv = 2;
+    int32 credit_cart_expiration_year=3;
+    int32 credit_cart_expiration_month = 4;
+}
+message PaymentServiceReq {
+    float amount = 1;
+    CreditCardInfo CreditCard = 2;
+    string order_id =3;
+    uint32 user_id = 4;
+}
+
+message PaymentServiceResp{
+    string transaction_id = 1;
+}

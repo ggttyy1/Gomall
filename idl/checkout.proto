@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package checkout;
+
+
+option go_package = "/checkout";
+
+service CheckoutService{
+    rpc Checkout(CheckoutReq) returns (CheckoutResp){};
+
+}
+
+message CheckoutReq{
+    uint32 user_id =1;
+    uint32 person_infor_id = 2;
+}
+
+message CheckoutResp{
+    string order_id = 1;
+    string transaction_id = 2;
+}
+
+
+message Address {
+    string street_address = 1;
+    string city = 2;
+    string state = 3;
+    string country = 4;
+    string zip_code = 5;
+  }

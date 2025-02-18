@@ -1,0 +1,35 @@
+{{ define "person-info-list" }}
+    {{ template "header" . }}
+    <div class="container mt-5">
+        <div class="row">
+            {{range .items}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{.Firstname}} {{.Lastname}}</h5>
+                        <p class="card-text">
+                            <strong>Email:</strong> {{.Email}}<br>
+                            <strong>Street Address:</strong> {{.StreetAddress}}<br>
+                            <strong>City:</strong> {{.City}}<br>
+                            <strong>State:</strong> {{.State}}<br>
+                            <strong>ZipCode:</strong> {{.ZipCode}}<br>
+                            <strong>Country:</strong> {{.Country}}<br>
+                            <strong>Credit Card Number:</strong> {{.CreditCardNum}}<br>
+                            <strong>Expiration Year:</strong> {{.CreditCardYeat}}<br>
+                            <strong>Expiration Month:</strong> {{.CreditCardMonth}}<br>
+                            <strong>CVV:</strong> {{.Cvv}}<br>
+                        </p>
+                        <a href="/personinfo/edit/{{.PersonInforId}}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="/personinfo/delete/{{.PersonInforId}}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+    <!-- 新增按钮 -->
+    <div class="text-center mt-4">
+        <a href="/person-info" class="btn btn-success btn-lg">Add</a>
+    </div>
+    {{ template "footer" . }}
+{{ end }}

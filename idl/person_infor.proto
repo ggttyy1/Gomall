@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package person_infor;
+
+option go_package = "/person_infor";
+
+service PersonInfor {
+    rpc RegisterPersonInfo (PersonReq) returns (PersonResp) {};
+    rpc GetPersonInfoList (GetPersonInfoListReq) returns (GetPersonInfoListResp) {};
+    rpc GetPersonInfo (GetPersonInfoReq) returns (GetPersonInfoResp) {};
+    rpc UpdatePersonInfo (UpdatePersonInfoReq) returns (UpdatePersonInfoResp) {};
+    rpc DeletePersonInfo (DeletePersonInfoReq) returns (DeletePersonInfoResp) {};
+}
+
+message Address{
+    string street_address = 1;
+    string city = 2;
+    string state = 3;
+    string country = 4;
+    string zip_code = 5;
+}
+
+message CreditCardInfo {
+    string credit_card_num = 1;
+    int32 creit_card_cvv = 2;
+    int32 credit_cart_expiration_year=3;
+    int32 credit_cart_expiration_month = 4;
+}
+message PersonReq {
+    uint32 user_id = 1;
+    Address address = 2;
+    string email = 3;
+    string first_name = 4;
+    string last_name = 5;
+    CreditCardInfo credit_card_info = 6;
+}
+
+message UpdatePersonInfoReq {
+    uint32 user_id = 1;
+    Address address = 2;
+    string email = 3;
+    string first_name = 4;
+    string last_name = 5;
+    CreditCardInfo credit_card_info = 6;
+    uint32 person_info_id = 7;
+}
+
+message UpdatePersonInfoResp {
+}
+
+message PersonResp {
+}
+
+
+message GetPersonInfoListReq{
+    uint32 user_id = 1;
+}
+
+message PersonInfo{
+    uint32 person_info_id = 6;
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    Address address = 4;
+    CreditCardInfo credit_card_info = 5;
+}
+
+message GetPersonInfoListResp {
+    repeated PersonInfo person_info = 1;
+}
+
+message GetPersonInfoReq {
+    uint32 person_info_id = 2;
+}
+
+message GetPersonInfoResp {
+    PersonInfo person_info = 1;
+}
+
+message DeletePersonInfoReq{
+    uint32 person_info_id = 1;
+}
+
+message DeletePersonInfoResp {
+}

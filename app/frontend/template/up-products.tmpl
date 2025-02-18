@@ -1,0 +1,44 @@
+{{ define "up-products" }}
+    {{ template "header" . }}
+    
+    <div class="container mt-5">
+        <h2>上传商品</h2>
+        
+        <!-- 上传商品表单 -->
+        <form action="/product/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label for="productName">商品名称</label>
+                <input type="text" class="form-control" id="productName" name="productName" placeholder="请输入商品名称" required>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="productPrice">商品价格</label>
+                <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="请输入商品价格" required step="0.01">
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="productDescription">商品描述</label>
+                <textarea class="form-control" id="productDescription" name="productDescription" rows="3" placeholder="请输入商品描述" required></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="productCategory">商品类别</label>
+                <select class="form-control" id="productCategory" name="productCategory" required>
+                    <option value="" disabled selected>选择商品类别</option>
+                    <option value="T-Shirt">T-Shirt</option>
+                    <option value="Sticker">Sticker</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="productImage">商品图片</label>
+                <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required>
+            </div>
+
+            <!-- 提交按钮 -->
+            <button type="submit" class="btn btn-primary mt-3">上传商品</button>
+        </form>
+    </div>
+
+    {{ template "footer" . }}
+{{ end }}

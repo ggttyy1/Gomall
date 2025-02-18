@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "/product";
+message ListProductsRequest{
+    int32 page = 1;
+    int32 page_size = 2;
+    string catagory_name = 3;
+}
+
+message Product{
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+    string picture = 4;
+    float price = 5;
+    repeated string categories = 6;
+}
+
+message UpProduct{
+    string name = 2;
+    string description = 3;
+    string picture = 4;
+    float price = 5;
+    string productCategory = 6;
+}
+
+message ListProductsResponse{
+    repeated Product products = 1;
+}
+
+message GetProductRequest{
+    uint32 id = 1;
+}
+
+message GetProductResponse{
+    Product product = 1;
+}
+
+message SearchProductsRequest{
+    string query = 1;
+}
+message SearchProductsResponse{
+    repeated Product results = 1;
+}
+
+message UploadProductRequest{
+    UpProduct product = 1;
+}
+
+message UploadProductResponse{
+    
+}
+service ProductCatalogService{
+    rpc ListProducts(ListProductsRequest) returns (ListProductsResponse){};
+    rpc GetProduct(GetProductRequest) returns (GetProductResponse){};
+    rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse){};
+    rpc UploadProduct(UploadProductRequest) returns (UploadProductResponse){};
+}
+

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package frontend.person_info;
+
+option go_package = "frontend/person_info";
+
+import "api.proto";
+import "frontend/common.proto";
+
+message PersonInfoReq {
+    string firtname =1[(api.form)="firstname"];
+    string lastname = 2[(api.form)="secondname"];
+    string email = 3[(api.form)="email"];
+    string street = 4[(api.form)="street"];
+    string zipcode = 5[(api.form)="zipcode"];
+    string city = 6[(api.form)="city"];
+    string country = 7[(api.form)="country"];
+    string Province = 8[(api.form)="province"];
+    string card_num = 9[(api.form)="cardNum"];
+    int32 month = 10[(api.form)="expirationMonth"];
+    int32 year = 11[(api.form)="expirationYear"];
+    int32 cvv = 12[(api.form)="cvv"];
+    string payment = 13[(api.form)="payment"];
+    uint32 personId = 14[(api.query)="personid"];
+}
+service PersonInfoService {
+    rpc PersonInforRegister(PersonInfoReq) returns (common.Empty){
+        option (api.post) = "/personinfo/Register";
+    }
+    rpc PersonInfo(common.Empty) returns (common.Empty){
+        option (api.get) = "/personinfo";
+    }
+    rpc PersonInfoEdit(PersonInfoEditReq) returns (common.Empty) {
+        option (api.get) = "/personinfo/edit/:personId";
+    }
+    rpc PersonInfoDelete(PersonInfoDeleteReq) returns (common.Empty) {
+        option (api.get) = "/personinfo/delete/:personId";
+    }
+}
+
+message PersonInfoEditReq {
+    uint32 personId = 1[(api.path)="personId"];
+}
+message PersonInfoDeleteReq {
+    uint32 personId = 1[(api.path)="personId"];
+}
