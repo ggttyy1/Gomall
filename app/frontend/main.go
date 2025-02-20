@@ -13,6 +13,7 @@ import (
 
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/router"
 	bizutils "github.com/cloudwego/biz-demo/gomall/app/frontend/biz/utils"
+	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/utils/tools"
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/conf"
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/infra/rpc"
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/middleware"
@@ -38,6 +39,7 @@ var (
 )
 
 func main() {
+	tools.Ai_init()
 	_ = godotenv.Load()
 	consul, registryIfo := mtl.InitMetric(CurrentServiceName, conf.GetConf().Hertz.MatricsPort, RegistryAddress)
 	defer consul.Deregister(registryIfo)

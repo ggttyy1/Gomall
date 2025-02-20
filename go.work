@@ -11,6 +11,4 @@ use (
 	./app/product
 	./app/user
 	./common
-	./demo/demo_protobuf
-	./hello_world
 )

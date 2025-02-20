@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package frontend.ai;
+
+import "frontend/common.proto";
+import "api.proto";
+option go_package = "frontend/ai";
+
+service AiService {
+    rpc GetAiInfo (GetAiInfoReq) returns (common.Empty) {
+        option (api.get) = "/ai/search";
+    };
+}
+
+message GetAiInfoReq {
+    string question = 1[(api.query) = "q"];
+}
