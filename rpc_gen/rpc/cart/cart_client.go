@@ -15,6 +15,8 @@ type RPCClient interface {
 	AddItem(ctx context.Context, Req *cart.AddItemReq, callOptions ...callopt.Option) (r *cart.AddItemResp, err error)
 	GetCart(ctx context.Context, Req *cart.GetCartReq, callOptions ...callopt.Option) (r *cart.GetCartResp, err error)
 	EmptyCart(ctx context.Context, Req *cart.EmptyCartReq, callOptions ...callopt.Option) (r *cart.EmptyCartResp, err error)
+	GetCartByProduct(ctx context.Context, Req *cart.GetCartByProductReq, callOptions ...callopt.Option) (r *cart.GetCartByProductResp, err error)
+	RemoveCartByProduct(ctx context.Context, Req *cart.RemoveCartByProductReq, callOptions ...callopt.Option) (r *cart.RemoveCartByProductResp, err error)
 }
 
 func NewRPCClient(dstService string, opts ...client.Option) (RPCClient, error) {
@@ -53,4 +55,12 @@ func (c *clientImpl) GetCart(ctx context.Context, Req *cart.GetCartReq, callOpti
 
 func (c *clientImpl) EmptyCart(ctx context.Context, Req *cart.EmptyCartReq, callOptions ...callopt.Option) (r *cart.EmptyCartResp, err error) {
 	return c.kitexClient.EmptyCart(ctx, Req, callOptions...)
+}
+
+func (c *clientImpl) GetCartByProduct(ctx context.Context, Req *cart.GetCartByProductReq, callOptions ...callopt.Option) (r *cart.GetCartByProductResp, err error) {
+	return c.kitexClient.GetCartByProduct(ctx, Req, callOptions...)
+}
+
+func (c *clientImpl) RemoveCartByProduct(ctx context.Context, Req *cart.RemoveCartByProductReq, callOptions ...callopt.Option) (r *cart.RemoveCartByProductResp, err error) {
+	return c.kitexClient.RemoveCartByProduct(ctx, Req, callOptions...)
 }

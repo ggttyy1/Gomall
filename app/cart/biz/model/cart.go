@@ -41,3 +41,17 @@ func SearchUserItem(ctx context.Context, db *gorm.DB, userid uint32) ([]*Cart, e
 	err := db.WithContext(ctx).Model(&Cart{}).Where(&Cart{UserID: userid}).Find(&cart).Error
 	return cart, err
 }
+
+func SearchUserProduct(ctx context.Context, db *gorm.DB, userid uint32, productid []uint32) ([]*Cart, error) {
+	var cart []*Cart
+	// 使用 IN 来查询多个 productid
+	err := db.WithContext(ctx).Model(&Cart{}).Where("user_id = ? AND product_id IN (?)", userid, productid).Find(&cart).Error
+	return cart, err
+}
+
+func DeleteUserProduct(ctx context.Context, db *gorm.DB, userid uint32, productid []uint32) error {
+	if userid == 0 {
+		return errors.New("userid is empty")
+	}
+	return db.WithContext(ctx).Delete(&Cart{}, "user_id = ? AND product_id IN (?)", userid, productid).Error
+}

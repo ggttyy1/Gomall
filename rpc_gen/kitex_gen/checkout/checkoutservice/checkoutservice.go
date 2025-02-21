@@ -22,6 +22,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
+	"CheckoutProduct": kitex.NewMethodInfo(
+		checkoutProductHandler,
+		newCheckoutProductArgs,
+		newCheckoutProductResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
 }
 
 var (
@@ -241,6 +248,159 @@ func (p *CheckoutResult) GetResult() interface{} {
 	return p.Success
 }
 
+func checkoutProductHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(checkout.CheckoutProductReq)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(checkout.CheckoutService).CheckoutProduct(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *CheckoutProductArgs:
+		success, err := handler.(checkout.CheckoutService).CheckoutProduct(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*CheckoutProductResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newCheckoutProductArgs() interface{} {
+	return &CheckoutProductArgs{}
+}
+
+func newCheckoutProductResult() interface{} {
+	return &CheckoutProductResult{}
+}
+
+type CheckoutProductArgs struct {
+	Req *checkout.CheckoutProductReq
+}
+
+func (p *CheckoutProductArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(checkout.CheckoutProductReq)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *CheckoutProductArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *CheckoutProductArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *CheckoutProductArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *CheckoutProductArgs) Unmarshal(in []byte) error {
+	msg := new(checkout.CheckoutProductReq)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var CheckoutProductArgs_Req_DEFAULT *checkout.CheckoutProductReq
+
+func (p *CheckoutProductArgs) GetReq() *checkout.CheckoutProductReq {
+	if !p.IsSetReq() {
+		return CheckoutProductArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *CheckoutProductArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *CheckoutProductArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type CheckoutProductResult struct {
+	Success *checkout.CheckoutProductResp
+}
+
+var CheckoutProductResult_Success_DEFAULT *checkout.CheckoutProductResp
+
+func (p *CheckoutProductResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(checkout.CheckoutProductResp)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *CheckoutProductResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *CheckoutProductResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *CheckoutProductResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *CheckoutProductResult) Unmarshal(in []byte) error {
+	msg := new(checkout.CheckoutProductResp)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *CheckoutProductResult) GetSuccess() *checkout.CheckoutProductResp {
+	if !p.IsSetSuccess() {
+		return CheckoutProductResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *CheckoutProductResult) SetSuccess(x interface{}) {
+	p.Success = x.(*checkout.CheckoutProductResp)
+}
+
+func (p *CheckoutProductResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *CheckoutProductResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -256,6 +416,16 @@ func (p *kClient) Checkout(ctx context.Context, Req *checkout.CheckoutReq) (r *c
 	_args.Req = Req
 	var _result CheckoutResult
 	if err = p.c.Call(ctx, "Checkout", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CheckoutProduct(ctx context.Context, Req *checkout.CheckoutProductReq) (r *checkout.CheckoutProductResp, err error) {
+	var _args CheckoutProductArgs
+	_args.Req = Req
+	var _result CheckoutProductResult
+	if err = p.c.Call(ctx, "CheckoutProduct", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

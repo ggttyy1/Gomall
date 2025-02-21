@@ -29,9 +29,10 @@ func (h *CheckoutWaitingService) Run(req *checkout.CheckoutReq) (resp map[string
 	// todo edit your code
 	fmt.Println(req.SelectedPerson)
 	userId := frontendutils.GetUserIdfromCtx(h.Context)
-	_, err = rpc.CheckoutClient.Checkout(h.Context, &rpccheckout.CheckoutReq{
+	_, err = rpc.CheckoutClient.CheckoutProduct(h.Context, &rpccheckout.CheckoutProductReq{
 		UserId:        uint32(userId),
 		PersonInforId: req.SelectedPerson,
+		ProductIds:    req.SelectedProduct,
 	})
 	if err != nil {
 		return nil, err

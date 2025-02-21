@@ -30,3 +30,8 @@ func _checkoutwaitingMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _checkoutproductsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

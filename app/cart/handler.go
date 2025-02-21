@@ -29,3 +29,17 @@ func (s *CartrSeviceImpl) EmptyCart(ctx context.Context, req *cart.EmptyCartReq)
 
 	return resp, err
 }
+
+// GetCartByProduct implements the CartrSeviceImpl interface.
+func (s *CartrSeviceImpl) GetCartByProduct(ctx context.Context, req *cart.GetCartByProductReq) (resp *cart.GetCartByProductResp, err error) {
+	resp, err = service.NewGetCartByProductService(ctx).Run(req)
+
+	return resp, err
+}
+
+// RemoveCartByProduct implements the CartrSeviceImpl interface.
+func (s *CartrSeviceImpl) RemoveCartByProduct(ctx context.Context, req *cart.RemoveCartByProductReq) (resp *cart.RemoveCartByProductResp, err error) {
+	resp, err = service.NewRemoveCartByProductService(ctx).Run(req)
+
+	return resp, err
+}

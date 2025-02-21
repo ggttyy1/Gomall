@@ -36,6 +36,20 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
+	"GetCartByProduct": kitex.NewMethodInfo(
+		getCartByProductHandler,
+		newGetCartByProductArgs,
+		newGetCartByProductResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
+	"RemoveCartByProduct": kitex.NewMethodInfo(
+		removeCartByProductHandler,
+		newRemoveCartByProductArgs,
+		newRemoveCartByProductResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
 }
 
 var (
@@ -561,6 +575,312 @@ func (p *EmptyCartResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getCartByProductHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(cart.GetCartByProductReq)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(cart.CartrSevice).GetCartByProduct(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *GetCartByProductArgs:
+		success, err := handler.(cart.CartrSevice).GetCartByProduct(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetCartByProductResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newGetCartByProductArgs() interface{} {
+	return &GetCartByProductArgs{}
+}
+
+func newGetCartByProductResult() interface{} {
+	return &GetCartByProductResult{}
+}
+
+type GetCartByProductArgs struct {
+	Req *cart.GetCartByProductReq
+}
+
+func (p *GetCartByProductArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(cart.GetCartByProductReq)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetCartByProductArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetCartByProductArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetCartByProductArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetCartByProductArgs) Unmarshal(in []byte) error {
+	msg := new(cart.GetCartByProductReq)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetCartByProductArgs_Req_DEFAULT *cart.GetCartByProductReq
+
+func (p *GetCartByProductArgs) GetReq() *cart.GetCartByProductReq {
+	if !p.IsSetReq() {
+		return GetCartByProductArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetCartByProductArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetCartByProductArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetCartByProductResult struct {
+	Success *cart.GetCartByProductResp
+}
+
+var GetCartByProductResult_Success_DEFAULT *cart.GetCartByProductResp
+
+func (p *GetCartByProductResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(cart.GetCartByProductResp)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetCartByProductResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetCartByProductResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetCartByProductResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetCartByProductResult) Unmarshal(in []byte) error {
+	msg := new(cart.GetCartByProductResp)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetCartByProductResult) GetSuccess() *cart.GetCartByProductResp {
+	if !p.IsSetSuccess() {
+		return GetCartByProductResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetCartByProductResult) SetSuccess(x interface{}) {
+	p.Success = x.(*cart.GetCartByProductResp)
+}
+
+func (p *GetCartByProductResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetCartByProductResult) GetResult() interface{} {
+	return p.Success
+}
+
+func removeCartByProductHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(cart.RemoveCartByProductReq)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(cart.CartrSevice).RemoveCartByProduct(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *RemoveCartByProductArgs:
+		success, err := handler.(cart.CartrSevice).RemoveCartByProduct(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*RemoveCartByProductResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newRemoveCartByProductArgs() interface{} {
+	return &RemoveCartByProductArgs{}
+}
+
+func newRemoveCartByProductResult() interface{} {
+	return &RemoveCartByProductResult{}
+}
+
+type RemoveCartByProductArgs struct {
+	Req *cart.RemoveCartByProductReq
+}
+
+func (p *RemoveCartByProductArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(cart.RemoveCartByProductReq)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *RemoveCartByProductArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *RemoveCartByProductArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *RemoveCartByProductArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *RemoveCartByProductArgs) Unmarshal(in []byte) error {
+	msg := new(cart.RemoveCartByProductReq)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var RemoveCartByProductArgs_Req_DEFAULT *cart.RemoveCartByProductReq
+
+func (p *RemoveCartByProductArgs) GetReq() *cart.RemoveCartByProductReq {
+	if !p.IsSetReq() {
+		return RemoveCartByProductArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *RemoveCartByProductArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *RemoveCartByProductArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type RemoveCartByProductResult struct {
+	Success *cart.RemoveCartByProductResp
+}
+
+var RemoveCartByProductResult_Success_DEFAULT *cart.RemoveCartByProductResp
+
+func (p *RemoveCartByProductResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(cart.RemoveCartByProductResp)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *RemoveCartByProductResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *RemoveCartByProductResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *RemoveCartByProductResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *RemoveCartByProductResult) Unmarshal(in []byte) error {
+	msg := new(cart.RemoveCartByProductResp)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *RemoveCartByProductResult) GetSuccess() *cart.RemoveCartByProductResp {
+	if !p.IsSetSuccess() {
+		return RemoveCartByProductResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *RemoveCartByProductResult) SetSuccess(x interface{}) {
+	p.Success = x.(*cart.RemoveCartByProductResp)
+}
+
+func (p *RemoveCartByProductResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *RemoveCartByProductResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -596,6 +916,26 @@ func (p *kClient) EmptyCart(ctx context.Context, Req *cart.EmptyCartReq) (r *car
 	_args.Req = Req
 	var _result EmptyCartResult
 	if err = p.c.Call(ctx, "EmptyCart", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetCartByProduct(ctx context.Context, Req *cart.GetCartByProductReq) (r *cart.GetCartByProductResp, err error) {
+	var _args GetCartByProductArgs
+	_args.Req = Req
+	var _result GetCartByProductResult
+	if err = p.c.Call(ctx, "GetCartByProduct", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) RemoveCartByProduct(ctx context.Context, Req *cart.RemoveCartByProductReq) (r *cart.RemoveCartByProductResp, err error) {
+	var _args RemoveCartByProductArgs
+	_args.Req = Req
+	var _result RemoveCartByProductResult
+	if err = p.c.Call(ctx, "RemoveCartByProduct", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

@@ -47,6 +47,7 @@ func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error)
 			"Price":       ProductItem.Product.Price,
 			"Picture":     ProductItem.Product.Picture,
 			"Quantity":    v.Quantity,
+			"ProductId":   v.ProductId,
 		})
 		total += float64(ProductItem.Product.Price) * float64(v.Quantity)
 

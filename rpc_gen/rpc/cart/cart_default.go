@@ -33,3 +33,21 @@ func EmptyCart(ctx context.Context, req *cart.EmptyCartReq, callOptions ...callo
 	}
 	return resp, nil
 }
+
+func GetCartByProduct(ctx context.Context, req *cart.GetCartByProductReq, callOptions ...callopt.Option) (resp *cart.GetCartByProductResp, err error) {
+	resp, err = defaultClient.GetCartByProduct(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "GetCartByProduct call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func RemoveCartByProduct(ctx context.Context, req *cart.RemoveCartByProductReq, callOptions ...callopt.Option) (resp *cart.RemoveCartByProductResp, err error) {
+	resp, err = defaultClient.RemoveCartByProduct(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "RemoveCartByProduct call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}

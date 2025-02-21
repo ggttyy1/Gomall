@@ -34,7 +34,12 @@
                     </div>
                     {{end}}
                 </div>
-
+                <!-- 提交的商品ID，隐藏字段 -->
+                <div class="mt-4 mb-3">
+                    {{range .items}}
+                        <input type="hidden" name="selected_items" value="{{.ProductId}}">
+                    {{end}}
+                </div>
                 <div class="mt-4 mb-3">
                     <div class="float-end">
                         <div class="m-3 text-danger fs-5 fw-bold">Total: ${{ .total }}</div>

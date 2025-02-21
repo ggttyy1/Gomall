@@ -7,7 +7,7 @@ option go_package = "/checkout";
 
 service CheckoutService{
     rpc Checkout(CheckoutReq) returns (CheckoutResp){};
-
+    rpc CheckoutProduct(CheckoutProductReq) returns (CheckoutProductResp){};
 }
 
 message CheckoutReq{
@@ -28,3 +28,14 @@ message Address {
     string country = 4;
     string zip_code = 5;
   }
+
+message CheckoutProductReq{
+    uint32 user_id =1;
+    uint32 person_infor_id = 2;
+    repeated uint32 product_ids = 3;
+}
+
+message CheckoutProductResp{
+    string order_id = 1;
+    string transaction_id = 2;
+}

@@ -9,6 +9,7 @@ import "frontend/common.proto";
 
 message CheckoutReq {
     uint32 selectedPerson = 1[(api.form)="selectedPerson"];
+    repeated uint32 selectedProduct = 2[(api.form)="selected_items"];
 }
 service CheckoutService {
     rpc Checkout(common.Empty) returns (common.Empty){
@@ -20,4 +21,12 @@ service CheckoutService {
     rpc CheckoutResult(common.Empty) returns (common.Empty){
         option (api.get) =  "/checkout/result";
     }
+
+    rpc CheckoutProducts(CheckoutProductReq) returns (common.Empty){
+        option (api.post) =  "/checkout";
+    }
+}
+
+message CheckoutProductReq{
+    repeated uint32 selectedProduct = 1[(api.form)="selected_items"];
 }

@@ -70,3 +70,23 @@ func CheckoutResult(ctx context.Context, c *app.RequestContext) {
 
 	c.HTML(consts.StatusOK, "result", utils.WarpResponse(ctx, c, resp))
 }
+
+// CheckoutProducts .
+// @router /checkout [POST]
+func CheckoutProducts(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req checkout.CheckoutProductReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := service.NewCheckoutProductsService(ctx, c).Run(&req)
+
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+	c.HTML(consts.StatusOK, "checkout", utils.WarpResponse(ctx, c, resp))
+}
