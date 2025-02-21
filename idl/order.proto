@@ -9,6 +9,7 @@ import "checkout.proto";
 service orderService {
     rpc ListOrder(ListOrderReq) returns (ListOrderResp){};
     rpc AddOrder(AddOrderReq) returns (AddOrderResp){};
+    rpc DeleteOrder(DeleteOrderReq) returns (DeleteOrderResp){};
 }
 
 message ProductItems {
@@ -40,9 +41,16 @@ message Order {
     checkout.Address address = 4;
     string email = 5;
     int32 created_at = 6;
+    int32 is_delete = 7;
 }
 
 message ListOrderResp {
     repeated Order order_list= 1;
 }
 
+message DeleteOrderReq{
+    string order_id = 1;
+}
+
+message DeleteOrderResp{
+}

@@ -59,6 +59,7 @@ func (h *OrderListService) Run(req *common.Empty) (resp map[string]any, err erro
 			CreatedDate: created.Format("2006-01-02 15:04:05"),
 			Items:       Items,
 			Cost:        total,
+			Deleted:     v.IsDelete,
 		})
 
 	}

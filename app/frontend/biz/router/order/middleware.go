@@ -15,3 +15,18 @@ func _orderlistMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _orderMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _orderdeleteMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _deleteMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -12,4 +12,5 @@ type Order struct {
 	CreatedDate string
 	Cost        float32
 	Items       []OrderItem
+	Deleted     int32
 }

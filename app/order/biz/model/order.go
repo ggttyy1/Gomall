@@ -33,7 +33,7 @@ type OrderItems struct {
 
 func ListOrder(ctx context.Context, db *gorm.DB, userId uint32) ([]*Order, error) {
 	var orders []*Order
-	err := db.WithContext(ctx).Where("user_id = ?", userId).Preload("Items").Find(&orders).Error
+	err := db.WithContext(ctx).Unscoped().Where("user_id = ?", userId).Preload("Items").Find(&orders).Error
 	if err != nil {
 		return nil, err
 	}
@@ -42,4 +42,8 @@ func ListOrder(ctx context.Context, db *gorm.DB, userId uint32) ([]*Order, error
 
 func CreateOrder(ctx context.Context, db *gorm.DB, order *Order) error {
 	return db.WithContext(ctx).Create(order).Error
+}
+
+func DeleteOrder(ctx context.Context, db *gorm.DB, orderId string) error {
+	return db.WithContext(ctx).Where("order_id = ?", orderId).Delete(&Order{}).Error
 }

@@ -10,4 +10,11 @@ service OrderService {
     rpc OrderList(common.Empty) returns (common.Empty){
         option (api.get) ="/order";
     }
+    rpc OrderDelete(OrderId) returns (common.Empty){
+        option (api.get) ="/order/delete/:orderId";
+    }
+}
+
+message OrderId {
+    string id = 1[(api.path) = "orderId"];
 }

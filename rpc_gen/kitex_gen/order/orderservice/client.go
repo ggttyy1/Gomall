@@ -13,6 +13,7 @@ import (
 type Client interface {
 	ListOrder(ctx context.Context, Req *order.ListOrderReq, callOptions ...callopt.Option) (r *order.ListOrderResp, err error)
 	AddOrder(ctx context.Context, Req *order.AddOrderReq, callOptions ...callopt.Option) (r *order.AddOrderResp, err error)
+	DeleteOrder(ctx context.Context, Req *order.DeleteOrderReq, callOptions ...callopt.Option) (r *order.DeleteOrderResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -52,4 +53,9 @@ func (p *kOrderServiceClient) ListOrder(ctx context.Context, Req *order.ListOrde
 func (p *kOrderServiceClient) AddOrder(ctx context.Context, Req *order.AddOrderReq, callOptions ...callopt.Option) (r *order.AddOrderResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.AddOrder(ctx, Req)
+}
+
+func (p *kOrderServiceClient) DeleteOrder(ctx context.Context, Req *order.DeleteOrderReq, callOptions ...callopt.Option) (r *order.DeleteOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.DeleteOrder(ctx, Req)
 }

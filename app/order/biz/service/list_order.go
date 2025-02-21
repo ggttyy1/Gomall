@@ -36,20 +36,40 @@ func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 				Cost:      item.Cost,
 			})
 		}
-		order_list = append(order_list, &order.Order{
-			Items:     items,
-			OrderId:   v.OrderId,
-			UserId:    v.UserId,
-			Email:     v.Consignee.Email,
-			CreatedAt: int32(v.CreatedAt.Unix()),
-			Address: &checkout.Address{
-				StreetAddress: v.Consignee.StreetAddress,
-				City:          v.Consignee.City,
-				State:         v.Consignee.State,
-				Country:       v.Consignee.Country,
-				ZipCode:       v.Consignee.ZipCode,
-			},
-		})
+		if v.DeletedAt.Time.IsZero() {
+			order_list = append(order_list, &order.Order{
+				Items:     items,
+				OrderId:   v.OrderId,
+				UserId:    v.UserId,
+				Email:     v.Consignee.Email,
+				CreatedAt: int32(v.CreatedAt.Unix()),
+				Address: &checkout.Address{
+					StreetAddress: v.Consignee.StreetAddress,
+					City:          v.Consignee.City,
+					State:         v.Consignee.State,
+					Country:       v.Consignee.Country,
+					ZipCode:       v.Consignee.ZipCode,
+				},
+				IsDelete: 0,
+			})
+		} else {
+			order_list = append(order_list, &order.Order{
+				Items:     items,
+				OrderId:   v.OrderId,
+				UserId:    v.UserId,
+				Email:     v.Consignee.Email,
+				CreatedAt: int32(v.CreatedAt.Unix()),
+				Address: &checkout.Address{
+					StreetAddress: v.Consignee.StreetAddress,
+					City:          v.Consignee.City,
+					State:         v.Consignee.State,
+					Country:       v.Consignee.Country,
+					ZipCode:       v.Consignee.ZipCode,
+				},
+				IsDelete: 1,
+			})
+		}
+
 	}
 	fmt.Println("order_list_server")
 	return &order.ListOrderResp{OrderList: order_list}, nil
