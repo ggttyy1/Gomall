@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"time"
 
-	"github.com/hertz-contrib/sessions"
-
+	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/utils"
 	auth "github.com/cloudwego/biz-demo/gomall/app/frontend/hertz_gen/frontend/auth"
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/infra/rpc"
 	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/protocol"
 )
 
 type LoginService struct {
@@ -28,12 +29,21 @@ func (h *LoginService) Run(req *auth.LoginReq) (redirect string, err error) {
 	if err != nil {
 		return "", err
 	}
-	session := sessions.Default(h.RequestContext)
-	session.Set("user_id", resp.UserId)
-	err = session.Save()
+
+	tokenString, err := utils.GenerateJWT(int(resp.UserId), "user")
 	if err != nil {
 		return "", err
 	}
+	// 设置 cookie
+	expireCookie := time.Now().Add(24 * time.Hour)         // 设置 cookie 过期时间为 1 天
+	maxage := int(expireCookie.Unix() - time.Now().Unix()) // 计算 maxage
+
+	h.RequestContext.SetCookie("token", tokenString, maxage, "/", "", protocol.CookieSameSiteDefaultMode, true, true)
+
+	if err != nil {
+		return "", err
+	}
+
 	if req.Next != "" {
 		redirect = req.Next
 	} else {

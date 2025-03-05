@@ -10,6 +10,7 @@ service orderService {
     rpc ListOrder(ListOrderReq) returns (ListOrderResp){};
     rpc AddOrder(AddOrderReq) returns (AddOrderResp){};
     rpc DeleteOrder(DeleteOrderReq) returns (DeleteOrderResp){};
+    rpc EditOrder(EditOrderReq) returns (EditOrderResp){};
 }
 
 message ProductItems {
@@ -53,4 +54,16 @@ message DeleteOrderReq{
 }
 
 message DeleteOrderResp{
+}
+
+message EditOrderReq {
+    string order_id = 1;
+    optional checkout.Address address = 2;
+    optional string email = 3;
+    repeated ProductItems items = 4;
+    optional int32 is_delete = 5;
+}
+
+message EditOrderResp {
+    Order updated_order = 1;
 }

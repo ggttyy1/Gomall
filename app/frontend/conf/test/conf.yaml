@@ -13,7 +13,7 @@ hertz:
   matrics_port: "192.168.2.1:9991"
 
 mysql:
-  dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "%s:%s@tcp(%s:%s)/rule_db?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
   address: "127.0.0.1:6379"

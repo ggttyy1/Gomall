@@ -2,9 +2,10 @@ package service
 
 import (
 	"context"
+
 	common "github.com/cloudwego/biz-demo/gomall/app/frontend/hertz_gen/frontend/common"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/hertz-contrib/sessions"
+	"github.com/cloudwego/hertz/pkg/protocol"
 )
 
 type LogoutService struct {
@@ -22,9 +23,9 @@ func (h *LogoutService) Run(req *common.Empty) (resp *common.Empty, err error) {
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-	session := sessions.Default(h.RequestContext)
-	session.Clear()
-	err = session.Save()
+
+	h.RequestContext.SetCookie("token", "", -1, "/", "", protocol.CookieSameSiteDefaultMode, true, true)
+
 	if err != nil {
 		return nil, err
 	}

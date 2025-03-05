@@ -11,6 +11,8 @@ import (
 	"github.com/hertz-contrib/sessions/redis"
 	"github.com/joho/godotenv"
 
+	jwt "github.com/cloudwego/biz-demo/gomall/app/frontend/JWT"
+	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/dal"
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/router"
 	bizutils "github.com/cloudwego/biz-demo/gomall/app/frontend/biz/utils"
 	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/utils/tools"
@@ -41,6 +43,8 @@ var (
 func main() {
 	tools.Ai_init()
 	_ = godotenv.Load()
+	dal.Init()
+	jwt.JwtInit()
 	consul, registryIfo := mtl.InitMetric(CurrentServiceName, conf.GetConf().Hertz.MatricsPort, RegistryAddress)
 	defer consul.Deregister(registryIfo)
 	rpc.Init()

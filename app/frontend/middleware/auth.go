@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 
+	"github.com/cloudwego/biz-demo/gomall/app/frontend/biz/utils"
 	frontendUtils "github.com/cloudwego/biz-demo/gomall/app/frontend/utils"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/sessions"
@@ -25,15 +26,25 @@ func GlobalAuth() app.HandlerFunc {
 func Auth() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		// TODO: implement
-		s := sessions.Default(ctx)
-		userId := s.Get("user_id")
-		if userId == nil {
+		// s := sessions.Default(ctx)
+		// userId := s.Get("user_id")
+
+		UserID := c.Value(frontendUtils.JWTUserId)
+		if UserID.(int) <= 0 {
 			ctx.Redirect(302, []byte("/sign-in?next="+ctx.FullPath()))
 			ctx.Abort()
 			return
 		}
-
 		ctx.Next(c)
 	}
 
+}
+func JWTGlobalAuth() app.HandlerFunc {
+	// 返回一个匿名函数，该函数接收两个参数：context.Context 类型的 c 和 *app.RequestContext 类型的 ctx
+	return func(c context.Context, ctx *app.RequestContext) {
+		_, data, _ := utils.ParseJWT(string(ctx.Cookie("token")))
+		c = context.WithValue(c, frontendUtils.JWTUserId, data.UserID)
+		c = context.WithValue(c, frontendUtils.JWTRole, data.Role)
+		ctx.Next(c)
+	}
 }

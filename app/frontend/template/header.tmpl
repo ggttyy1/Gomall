@@ -39,8 +39,11 @@
             <a class="nav-link" href="/about">About</a>
             </li>
             </li>
+            {{if .user_role}}
             <li class="nav-item">
             <a class="nav-link" href="/UpProducts">Upload</a>
+            {{else}}
+            {{end}}
             </li>
         </ul>
         <form class="d-flex mx-auto" role="search" action="/ai/search" method="get" >

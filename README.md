@@ -21,7 +21,7 @@ GoMall 的设计目标是成为一个高性能、易于维护的电商解决方�
 - **编程语言**：Go (Golang)
 - **Web 框架**：hertz
 - **RPC 框架**：Kitex
-- **服务中心**：Counsel
+- **服务中心**：Consul
 - **数据库**：MySQL
 - **消息队列**：Nats
 - **大模型**：llama3.2
